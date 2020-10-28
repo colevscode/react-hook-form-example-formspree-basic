@@ -7,7 +7,15 @@ import "./index.css";
 
 function App() {
   const { register, handleSubmit } = useForm();
-  const [state, sendToFormspree] = useFormspree("myybwrek");
+  const [state, sendToFormspree] = useFormspree("YOUR_FORM_ID");
+
+  if (state.succeeded) {
+    return (
+      <div className="App">
+        <h1>Thanks!</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
@@ -21,7 +29,12 @@ function App() {
           <label htmlFor="emailField">Email</label>
           <input name="email" id="emailField" type="email" ref={register} />
         </div>
-        <input type="submit" />
+
+        <input type="submit" disabled={state.submitting} />
+
+        {state.errors.map((err) => (
+          <p>{err.message}</p>
+        ))}
       </form>
     </div>
   );
